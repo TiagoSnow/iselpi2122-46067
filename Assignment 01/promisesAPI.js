@@ -30,7 +30,6 @@ function getProperties(gameID){
         .then(body => JSON.parse(body)['games'][0])
 }
 
-
 /**
  * Obtains a promise with all of the filtered Objects properties
  * 
@@ -41,7 +40,6 @@ function getPropertiesN(IDs, props){
     return Promise.all(IDs.map(id => getProperties(id)
         .then(r => utils.filterProperties(props, r))))
 }
-
 
 /**
  * Returns promise containing an array with all ID's
@@ -59,7 +57,6 @@ function readIDs(fileName){
         .then(data => data == null ? [] : data.toString().split(/'\n'|'\r'|\r\n/g)
         )
 }
-
 
 function data2File(fileName, data){
     fs.writeFile(fileName,JSON.stringify(data))
@@ -79,7 +76,6 @@ function writeWantedProperties(inName, outName, properties){
         .then(res => data2File(outName, res))
 }
 
-
 /**
  * Prints properties from objects obtained from file
  * 
@@ -91,6 +87,3 @@ function printWantedProperties(fileName, properties){
         .then(result => getPropertiesN(result, properties))
         .then(res => console.log(res))
 }
-
-//printWantedProperties('./utils/gameIDs.txt', ['name', 'url'])
-//writeWantedProperties('./utils/gameIDs.txt', 'a.json', ['name', 'url'])
