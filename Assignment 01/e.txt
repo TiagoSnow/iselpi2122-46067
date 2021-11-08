@@ -1,1 +1,0 @@
-[{"name":"The Resistance: Avalon","url":"https://www.boardgameatlas.com/game/unQAllLRup/the-resistance-avalon"},{"name":"Catan","url":"https://www.boardgameatlas.com/game/OIXt3DmJU0/catan"},{"name":"Codenames","url":"https://www.boardgameatlas.com/game/GP7Y2xOUzj/codenames"}]
