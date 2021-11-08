@@ -34,6 +34,7 @@ function getProperties(gameID){
  * Obtains a promise with all of the filtered Objects properties
  * 
  * @param {String[]} IDs Array of a set of game's ID
+ * @param {String[]} props Array of the wanted properties
  * @returns {Promise<{}[]>}
  */
 function getPropertiesN(IDs, props){
@@ -79,10 +80,10 @@ function writeWantedProperties(inName, outName, properties){
 /**
  * Prints properties from objects obtained from file
  * 
- * @param {String} fileName 
+ * @param {String} inName 
  * @param {String[]} properties 
  */
-function printWantedProperties(fileName, properties){
+function printWantedProperties(inName, properties){
     readIDs(fileName)
         .then(result => getPropertiesN(result, properties))
         .then(res => console.log(res))
