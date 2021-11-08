@@ -16,9 +16,10 @@ const fetch = require('node-fetch')
 
 const ID = process.env.ATLAS_CLIENT_ID
 
+function urlFormatter(gameID){
+    return 'https://api.boardgameatlas.com/api/search?ids=' + gameID + '&client_id=' + ID
+}
 
-//writeWantedProperties('./utils/gameIDs.txt', 'e.txt',['name','url'])
-printWantedProperties('./utils/gameIDs.txt',['name','url'])
 /**
  * Obtains a promise to an object containing the game's name and url, who's ID is passed as parameter 
  * Obtained JSON contains 2 properties: game and count -> remove count
@@ -28,10 +29,10 @@ printWantedProperties('./utils/gameIDs.txt',['name','url'])
  * @returns {Promise.<>}
  */
 async function getProperties(gameID){
-    let response = await fetch('https://api.boardgameatlas.com/api/search?ids=' + gameID + '&client_id=' + ID)
-    response = await response.text()
-    response = JSON.parse(response)['games'][0]
-    return response
+    return JSON.parse(
+        await (
+            await fetch(urlFormatter(gameID))
+        ).text())['games'][0]
 }
 
 /**
@@ -59,14 +60,8 @@ async function getPropertiesN(file, props){
  * @returns {String[]} 
  */
 async function readIDs(fileName){
-    try{
-        const data = await fs.readFile(fileName,'utf8')
-        return data.toString().split(/'\n'|'\r'|\r\n/g)
-    }
-    catch(e){
-        console.log('Input file \''+ fileName + '\' not found!\nReturning...')
-        return []
-    }
+    const data = await fs.readFile(fileName,'utf8')
+    return data.toString().split(/'\n'|'\r'|\r\n/g)
 }
 
 function data2File(fileName, data){
@@ -82,8 +77,13 @@ function data2File(fileName, data){
  * @param {*} properties Properties array
  */
 async function writeWantedProperties(inName, outName, properties){
-    let aux = await getPropertiesN(inName,properties)
-    data2File(outName,aux)
+    try{
+        let aux = await getPropertiesN(inName,properties)
+        data2File(outName,aux)
+    }
+    catch(e){
+        console.log(e)
+    }
 }
 
 /**
@@ -93,6 +93,11 @@ async function writeWantedProperties(inName, outName, properties){
  * @param {String[]} properties 
  */
 async function printWantedProperties(inName, properties){
-    let aux = await getPropertiesN(inName,properties)
-    console.log(aux)
+    try{
+        let aux = await getPropertiesN(inName,properties)
+        console.log(aux)
+    }
+    catch(e){
+        console.log(e)
+    }
 }

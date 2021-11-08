@@ -16,6 +16,10 @@ const fetch = require('node-fetch')
 
 const ID = process.env.ATLAS_CLIENT_ID
 
+function urlFormatter(gameID){
+    return 'https://api.boardgameatlas.com/api/search?ids=' + gameID + '&client_id=' + ID
+}
+
 /**
  * Obtains a promise to an object containing the game's name and url, who's ID is passed as parameter 
  * Obtained JSON contains 2 properties: game and count -> remove count
@@ -25,7 +29,7 @@ const ID = process.env.ATLAS_CLIENT_ID
  * @returns {Promise.<Object>}
  */
 function getProperties(gameID){
-    return fetch('https://api.boardgameatlas.com/api/search?ids=' + gameID + '&client_id=' + ID)
+    return fetch(urlFormatter(gameID))
         .then(res => res.text())
         .then(body => JSON.parse(body)['games'][0])
 }
@@ -50,11 +54,7 @@ function getPropertiesN(IDs, props){
  * @returns {String[]} 
  */
 function readIDs(fileName){
-    return fs.readFile(fileName, 'utf8').
-        catch(() => {
-            console.log('Input file \''+ fileName + '\' not found!\nReturning...')
-            return null
-        })
+    return fs.readFile(fileName, 'utf8')
         .then(data => data == null ? [] : data.toString().split(/'\n'|'\r'|\r\n/g)
         )
 }
@@ -75,6 +75,7 @@ function writeWantedProperties(inName, outName, properties){
     readIDs(inName)
         .then(result => getPropertiesN(result, properties))
         .then(res => data2File(outName, res))
+        .catch(e => console.log(e))
 }
 
 /**
@@ -84,7 +85,9 @@ function writeWantedProperties(inName, outName, properties){
  * @param {String[]} properties 
  */
 function printWantedProperties(inName, properties){
-    readIDs(fileName)
+    readIDs(inName)
         .then(result => getPropertiesN(result, properties))
         .then(res => console.log(res))
+        .catch(e => console.log(e))
 }
+
