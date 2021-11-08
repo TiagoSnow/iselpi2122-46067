@@ -21,7 +21,6 @@ function filterPropertiesN(propNames, objs){
         newObj.concat(filterPropertiesN(propNames, objs))
 }
 
-
 Array.prototype.zip = function (a, combiner){
     let newArr = []
     for (let index = 0; index < this.length && index < a.length; index++) {
