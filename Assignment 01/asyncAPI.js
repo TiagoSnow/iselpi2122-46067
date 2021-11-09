@@ -43,14 +43,12 @@ async function getProperties(gameID){
  * @returns {Promise<{}[]>}
  */
 async function getPropertiesN(file, props){
-    let ret = []
     let IDs = await readIDs(file)
-    for (let i = 0; i < IDs.length; i++) {
-        let aux = await getProperties(IDs[i])
-        ret.push(utils.filterProperties(props,aux))
-    }
-    return ret
+    return await Promise.all(
+        IDs.map(async ID => 
+            utils.filterProperties(props, await getProperties(ID))))
 }
+
 
 /**
  * Returns an array with all ID's
@@ -59,6 +57,7 @@ async function getPropertiesN(file, props){
  * @param {String} fileName 
  * @returns {String[]} 
  */
+
 async function readIDs(fileName){
     const data = await fs.readFile(fileName,'utf8')
     return data.toString().split(/'\n'|'\r'|\r\n/g)
