@@ -1,0 +1,32 @@
+<div class="col-sm-10">
+    <h2>Tasks:</h2>
+    <ul>
+        <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">DueDate</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each task}}
+                        <tr>
+                        <th scope="row">
+                            <a href="{{path}}">
+                                {{task.id}}     
+                            </a>
+                        </th>
+                        <td>{{task.dueDate}}</td>
+                        <td>{{task.title}}</td>
+                        <td>{{task.description}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+                </table>
+                </a>
+            </li>
+        
+    </ul>
+</div>
